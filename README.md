@@ -74,6 +74,9 @@ import Client from './Suckit-Client'
 new Client() // Create A Client
 ```
 
+## Getters
+* `state <string>` | The state of the client.
+
 ## connect()
 ```ts
 .connect(<host>, <port>) // Connect To A Server
@@ -122,7 +125,7 @@ new Client() // Create A Client
 * `callback <(...args) => any>` | The function that triggers when the event is called.
 
 **- All Events -**
-| name       | callback data                 | description                                           |
+| name       | callback arguments            | description                                           |
 | ---        | ---                           | ---                                                   |
 | connect    | ()                            | Triggeres when the client connect to the server.      |
 | disconnect | ()                            | Triggeres when the client disconnect from the server. |
