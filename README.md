@@ -41,6 +41,9 @@ client.listen('connect', async () => {
   * [listen()](#listen)
   * [removeListener()](#removelistener)
   * [removeAllListeners()](#removealllisteners)
+* [ServerClient](#serverclient)
+* [Request](#request)
+  * [response()](#response)
 
 # Server
 ```ts
@@ -146,5 +149,18 @@ new Client() // Create A Client
 ```ts
 .removeAllListeners() // Remove All Listeners
 ```
+
+> `return <void>`
+
+# ServerClient
+The client object on the server, it's just [Client](#client) without `.connect()`.
+
+# Request
+
+## response()
+```ts
+.response(<data>) // Response To The Request
+```
+* `data <any>` | The data that you want to response.
 
 > `return <void>`
