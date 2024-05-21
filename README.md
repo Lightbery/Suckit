@@ -41,3 +41,24 @@ client.listen('connect', () => {
   * [listen()](#listen)
   * [removeListener()](#removelistener)
   * [removeAllListeners()](#removealllisteners)
+
+# Server
+```ts
+import { Server } from './Suckit-Server'
+
+new Server(<callback>, <port>) // Create a server
+```
+* `callback <function>` | The callback function will receive a callback function will receive the following parameters: `(client: ServerClient)`
+* `port <number>` | The port of the server. `Default 3000`
+
+## start()
+```ts
+.start() // Start The Server
+```
+> `return <undefined>`
+
+## stop ()
+```ts
+.stop() // Stop The Server
+```
+> `return <undefined>`
