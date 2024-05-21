@@ -48,7 +48,7 @@ import { Server } from './Suckit-Server'
 
 new Server(<callback>, <port>) // Create a server
 ```
-* `callback <function>` | The callback function will receive a callback function will receive the following parameters: `(client: ServerClient)`
+* `callback <(client: ServerClient) => any>` | The connection callback function.
 * `port <number>` | The port of the server. `Default 3000`
 
 ## Getters
@@ -59,13 +59,13 @@ new Server(<callback>, <port>) // Create a server
 ```ts
 .start() // Start The Server
 ```
-> `return <undefined>`
+> `return <void>`
 
 ## stop()
 ```ts
 .stop() // Stop The Server
 ```
-> `return <undefined>`
+> `return <void>`
 
 # Client
 ```ts
@@ -76,5 +76,72 @@ new Client() // Create A Client
 
 ## connect()
 ```ts
-.connect(host: string, port?: number) // Connect To A Server
+.connect(<host>, <port>) // Connect To A Server
 ```
+* `host <string>` | The hostname of the server.
+* `port <number>` | The port of the server. `Default 3000`
+
+> `return Promise<void>`
+
+## disconnect()
+```ts
+.disconncet() // Disconnect From The Server
+```
+
+> `return <void>`
+
+## sendMessage()
+```ts
+.sendMessage(data) // Send A Message To The Server
+```
+* `data <any>` | The content of the message.
+
+> `return <void>`
+
+## sendRequest()
+```ts
+.sendRequest(<data>) // Send A Request To The Server
+```
+* `data <any>` | The content of the request.
+
+> `return Promise<any>`
+
+## sendRawData()
+```ts
+.sendRawData(<data>) // Send Raw Data To The Server
+```
+* `data <any>` | The data that you wan to send.
+
+> `return <void>`
+
+## listen()
+```ts
+.listen(<type>, <callback>) // Listen To An Event
+```
+* `type <string>` | The type of the event.
+* `callback <(...args) => any>` | The function that triggers when the event is called.
+
+**- All Events -**
+| name       | callback data                 | description                                           |
+| ---        | ---                           | ---                                                   |
+| connect    | ()                            | Triggeres when the client connect to the server.      |
+| disconnect | ()                            | Triggeres when the client disconnect from the server. |
+| message    | (data: any)                   | Triggeres when the client receive a message.          |
+| request    | (request: Request, data: any) | Triggeres when the client receive a request.          |
+
+> `return <string>` (The ID of the listener)
+
+## removeListener()
+```ts
+.removeListener(<id>) // Remove A Listener
+```
+* `id <string>` | The ID of the listener.
+
+> `return <void>`
+
+## removeAllListeners()
+```ts
+.removeAllListeners() // Remove All Listeners
+```
+
+> `return <void>`
