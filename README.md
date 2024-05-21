@@ -18,8 +18,8 @@ const client = new Client()
 
 client.connect('localhost')
 
-client.listen('connect', () => {
-  console.log(client.sendRequest('ping'))
+client.listen('connect', async () => {
+  console.log(await client.sendRequest('ping'))
 })
 ```
 
@@ -61,8 +61,20 @@ new Server(<callback>, <port>) // Create a server
 ```
 > `return <undefined>`
 
-## stop ()
+## stop()
 ```ts
 .stop() // Stop The Server
 ```
 > `return <undefined>`
+
+# Client
+```ts
+import Client from './Suckit-Client'
+
+new Client() // Create A Client
+```
+
+## connect()
+```ts
+.connect(host: string, port?: number) // Connect To A Server
+```
