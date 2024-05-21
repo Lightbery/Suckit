@@ -1,5 +1,5 @@
 # Suckit
-Socket but worse.
+A thing like socket, but worse.
 
 ## Example
 ```ts
