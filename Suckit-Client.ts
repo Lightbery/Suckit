@@ -152,6 +152,29 @@ class Request {
   }
 }
 
+// Generate ID
+function generateID (length: number, keys: string[]): string {
+  let id = generateAnID(length)
+
+  while (keys.includes(id)) id = generateAnID(length)
+
+  return id
+}
+
+// Generate An ID
+function generateAnID (length: number): string {
+  let string: string = ''
+
+  for (let i = 0; i < length; i++) string += letters[getRandom(0, letters.length - 1)]
+
+  return string
+}
+
+// Get A Random Number
+function getRandom (min: number, max: number): number {
+  return Math.floor(Math.random() * max) + min 
+}
+
 // Listener
 interface Listener {
   type: string, 
@@ -161,4 +184,4 @@ interface Listener {
 
 export default Client 
 
-import generateID from './GenerateID'
+const letters: string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789'
