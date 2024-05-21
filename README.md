@@ -22,3 +22,22 @@ client.listen('connect', () => {
   console.log(client.sendRequest('ping'))
 })
 ```
+
+> [!Note]
+> Suckit need `GenerateID.ts` and `GetRandom.ts` as dependencies.
+
+## Contents
+* [Server](#server)
+  * [Getters](#getters)
+  * [start()](#start)
+  * [stop()](#stop)
+* [Client](#client)
+  * [Getters](#getters-1)
+  * [connect()](#connect)
+  * [disconnect()](#disconnect)
+  * [sendMessage()](#sendmessage)
+  * [sendRequest()](#sendrequest)
+  * [sendRawData()](#sendrawdata)
+  * [listen()](#listen)
+  * [removeListener()](#removelistener)
+  * [removeAllListeners()](#removealllisteners)
