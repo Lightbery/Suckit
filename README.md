@@ -51,6 +51,10 @@ new Server(<callback>, <port>) // Create a server
 * `callback <function>` | The callback function will receive a callback function will receive the following parameters: `(client: ServerClient)`
 * `port <number>` | The port of the server. `Default 3000`
 
+## Getters
+* `state <string>` | The state of the server.
+* `port <number>` | The port of the server.
+
 ## start()
 ```ts
 .start() // Start The Server
