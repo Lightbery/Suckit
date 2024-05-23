@@ -13,7 +13,7 @@ class Client {
 
   // Connect To A Server
   public connect (host: string, port?: number): Promise<void> {
-    if (this._state !== 'idle') throw new Error(`Cannot Connect To A Server (State: ${this._state})`)
+    if (this._state !== 'idle') throw new Error(`Cannot Connect To A Server: ${this._state}`)
 
     return new Promise((resolve) => {
       this._state = 'connecting'
@@ -62,21 +62,21 @@ class Client {
 
   // Disconnect From The Server
   public disconnect (): void {
-    if (this._state !== 'connected') throw new Error(`Cannot Disconnect (State: ${this._state})`)
+    if (this._state !== 'connected') throw new Error(`Cannot Disconnect From The Server: ${this._state}`)
 
     this._connection?.destroy()
   }
 
   // Send A Data 
   public sendMessage (data: any): void {
-    if (this._state !== 'connected') throw new Error(`Cannot Send The Message: (State: ${this._state})`)
+    if (this._state !== 'connected') throw new Error(`Cannot Send The Message: ${this._state}`)
 
     this.sendRawData({ type: 'message', data })
   }
 
   // Send A Request
   public sendRequest (data: any): Promise<any> {
-    if (this._state !== 'connected') throw new Error(`Cannot Send The Request: (State: ${this._state})`)
+    if (this._state !== 'connected') throw new Error(`Cannot Send The Request: ${this._state}`)
 
     return new Promise((resolve) => {
       const id = generateID(5, Object.keys(this._requests))
@@ -89,7 +89,7 @@ class Client {
 
   // Send Raw Data
   public sendRawData (data: any): void {
-    if (this._state !== 'connected') throw new Error(`Cannot Send Data: (State: ${this._state})`)
+    if (this._state !== 'connected') throw new Error(`Cannot Send Data: ${this._state}`)
 
     this._connection?.write(`${Buffer.from(JSON.stringify(data)).toString('base64')}|`)
   }
@@ -142,7 +142,7 @@ class Request {
 
   // Response To The Request
   public response (data: any): void {
-    if (this._Client.state !== 'connected') throw new Error(`Cannot Response To The Request (State: ${this._Client.state})`)
+    if (this._Client.state !== 'connected') throw new Error(`Cannot Response To The Request: ${this._Client.state}`)
 
     if (this._responsed) throw new Error('The Request Has Already Been Responsed')
 
