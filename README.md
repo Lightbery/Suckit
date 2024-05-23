@@ -41,7 +41,6 @@ client.listen('connect', async () => {
   * [listen()](#listen)
   * [removeListener()](#removelistener)
   * [removeAllListeners()](#removealllisteners)
-* [ServerClient](#serverclient)
 * [Request](#request)
   * [response()](#response)
 
@@ -51,7 +50,7 @@ import { Server } from './Suckit-Server'
 
 new Server(<callback>, <port>) // Create a server
 ```
-* `callback <(client: ServerClient) => any>` | The connection callback function.
+* `callback <(client: Client) => any>` | The connection callback function.
 * `port <number>` | The port of the server. `Default 3000`
 
 ## Getters
@@ -151,9 +150,6 @@ new Client() // Create A Client
 ```
 
 > `return <void>`
-
-# ServerClient
-The client object on the server, it's just [Client](#client) without `.connect()`.
 
 # Request
 

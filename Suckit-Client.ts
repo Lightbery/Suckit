@@ -89,7 +89,7 @@ class Client {
 
   // Send Raw Data
   public sendRawData (data: any): void {
-    if (this._state !== 'connected') throw new Error(`Cannot Send Data: ${this._state}`)
+    if (this._state !== 'connected') throw new Error(`Cannot Send Raw Data: ${this._state}`)
 
     this._connection?.write(`${Buffer.from(JSON.stringify(data)).toString('base64')}|`)
   }
