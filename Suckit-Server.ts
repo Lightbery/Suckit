@@ -19,7 +19,7 @@ class Server {
 
   // Start The Server
   public start (): void {
-    if (this._state !== 'idle') throw new Error(`Cannot Start The Server: ${this._state}`)
+    if (this._state !== 'idle') throw new Error(`Cannot Start The Server (State: ${this._state})`)
   
     this._state = 'started'
 
@@ -32,7 +32,7 @@ class Server {
 
   // Stop The Server
   public stop (): void {
-    if (this._state !== 'started') throw new Error(`Cannot Stop The Server: ${this._state}`)
+    if (this._state !== 'started') throw new Error(`Cannot Stop The Server (State: ${this._state})`)
 
     this._state = 'idle'
 
@@ -64,15 +64,17 @@ class Client {
       buffer += chunk.toString()
 
       while (buffer.includes('|')) {
-        const data = JSON.parse(Buffer.from(buffer.substring(0, buffer.indexOf('|')), 'base64').toString()) 
+        if (this._state === 'connected') {
+          const data = JSON.parse(Buffer.from(buffer.substring(0, buffer.indexOf('|')), 'base64').toString()) 
 
         if (data.type === 'message') this._callEvent('message', [data.data])
-        else if (data.type === 'request') this._callEvent('request', [new Request(this, data), data.data])
-        else if (data.type === 'response') {
-          if (this._requests[data.requestID] !== undefined) {
-            this._requests[data.requestID](data.data)
+          else if (data.type === 'request') this._callEvent('request', [new Request(this, data), data.data])
+          else if (data.type === 'response') {
+            if (this._requests[data.requestID] !== undefined) {
+              this._requests[data.requestID](data.data)
 
-            delete this._requests[data.requestID]
+              delete this._requests[data.requestID]
+            }
           }
         }
 
@@ -87,19 +89,21 @@ class Client {
   public disconnect (): void {
     if (this._state !== 'connected') throw new Error(`Cannot Disconnect The Client: ${this._state}`)
 
-    this._client?.destroy()
+    this._client.destroy()
+
+    this._state = 'disconnected'
   }
 
   // Send A Data 
   public sendMessage (data: any): void {
-    if (this._state !== 'connected') throw new Error(`Cannot Send The Message: ${this._state}`)
+    if (this._state !== 'connected') throw new Error(`Cannot Send The Message: (State: ${this._state})`)
 
     this.sendRawData({ type: 'message', data })
   }
 
   // Send A Request
   public sendRequest (data: any): Promise<any> {
-    if (this._state !== 'connected') throw new Error(`Cannot Send The Request: ${this._state}`)
+    if (this._state !== 'connected') throw new Error(`Cannot Send The Request: (State: ${this._state})`)
 
     return new Promise((resolve) => {
       const id = generateID(5, Object.keys(this._requests))
@@ -112,7 +116,7 @@ class Client {
 
   // Send Raw Data
   public sendRawData (data: any): void {
-    if (this._state !== 'connected') throw new Error(`Cannot Send Raw Data: ${this._state}`)
+    if (this._state !== 'connected') throw new Error(`Cannot Send Data: (State: ${this._state})`)
 
     this._client?.write(`${Buffer.from(JSON.stringify(data)).toString('base64')}|`)
   }
@@ -165,7 +169,7 @@ class Request {
 
   // Response To The Request
   public response (data: any): void {
-    if (this._Client.state !== 'connected') throw new Error(`Cannot Response To The Request: ${this._Client.state}`)
+    if (this._Client.state !== 'connected') throw new Error(`Cannot Response To The Request (State: ${this._Client.state})`)
 
     if (this._responsed) throw new Error('The Request Has Already Been Responsed')
 
