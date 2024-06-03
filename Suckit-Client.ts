@@ -36,28 +36,34 @@ class Client {
         this._connection = undefined
       })
 
-      let buffer: string = ''
+      let chunks: Buffer[] = []
 
       this._connection.on('data', (chunk) => {
-        buffer += chunk.toString()
+        chunks.push(chunk)
 
-        while (buffer.includes('|')) {
-          if (this._state === 'connected') {
-            const data = JSON.parse(Buffer.from(buffer.substring(0, buffer.indexOf('|')), 'base64').toString())
+        if (chunk.includes('|')) {
+          let string = Buffer.concat(chunks).toString()
 
-            if (data.type === 'message') this._callEvent('message', [data.data])
-            else if (data.type === 'request') this._callEvent('request', [new Request(this, data), data.data])
-            else if (data.type === 'response') {
-              if (this._requests[data.requestID] !== undefined) {
-                this._requests[data.requestID](data.data)
+          while (string.includes('|')) {
+            if (this._state === 'connected') {
+              const data = JSON.parse(Buffer.from(string.substring(0, string.indexOf('|')), 'base64').toString())
 
-                delete this._requests[data.requestID]
+              if (data.type === 'message') this._callEvent('message', [data.data])
+              else if (data.type === 'request') this._callEvent('request', [new Request(this, data), data.data])
+              else if (data.type === 'response') {
+                if (this._requests[data.requestID] !== undefined) {
+                  this._requests[data.requestID](data.data)
+
+                  delete this._requests[data.requestID]
+                }
               }
             }
+
+            string = string.substring(string.indexOf('|') + 1, string.length)
           }
 
-          buffer = buffer.substring(buffer.indexOf('|') + 1, buffer.length)
-        }
+          chunks = [Buffer.from(string)]
+        } 
       })
     })
   }
