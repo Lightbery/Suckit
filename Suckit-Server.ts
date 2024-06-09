@@ -64,11 +64,11 @@ class Client {
       chunks.push(chunk)
 
       if (chunk.includes('|')) {
-        let string = Buffer.concat(chunks).toString()
+        let buffer = Buffer.concat(chunks)
 
-        while (string.includes('|')) {
+        while (buffer.includes('|')) {
           if (this._state === 'connected') {
-            const data = JSON.parse(Buffer.from(string.substring(0, string.indexOf('|')), 'base64').toString())
+            let data = JSON.parse(Buffer.from(buffer.subarray(0, buffer.indexOf('|') + 1).toString(), 'base64').toString())
 
             if (data.type === 'message') this._callEvent('message', [data.data])
             else if (data.type === 'request') this._callEvent('request', [new Request(this, data), data.data])
@@ -81,10 +81,10 @@ class Client {
             }
           }
 
-          string = string.substring(string.indexOf('|') + 1, string.length)
+          buffer = buffer.subarray(buffer.indexOf('|') + 1, buffer.length)
         }
 
-        chunks = [Buffer.from(string)]
+        chunks = [buffer]
       } 
     })
   }
